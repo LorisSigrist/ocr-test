@@ -53,7 +53,6 @@
 </script>
 
 <main>
-	<h1>OCR with Tesseract.js!</h1>
 	<!-- svelte-ignore a11y-media-has-caption -->
 	<video bind:this={video} />
 	<canvas bind:this={canvas} />
@@ -64,3 +63,9 @@
 		<div>Loading...</div>
 	{/if}
 </main>
+
+<style>
+	video {
+		border: 1px solid black;
+	}
+</style>
