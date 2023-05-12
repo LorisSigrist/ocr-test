@@ -45,7 +45,7 @@
 		const {
 			data: { text }
 		} = await worker.recognize(img);
-		output = text;	
+		output = text ?? "No text found";	
 	};
 
 	// Start the webcam
