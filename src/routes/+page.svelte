@@ -2,7 +2,10 @@
 	import { onMount } from 'svelte';
 	import { createWorker, type Worker } from 'tesseract.js';
 
-	let video : HTMLVideoElement, canvas : HTMLCanvasElement, ctx : CanvasRenderingContext2D, worker: Worker;
+	let video: HTMLVideoElement,
+		canvas: HTMLCanvasElement,
+		ctx: CanvasRenderingContext2D,
+		worker: Worker;
 	let running = false;
 	let output = '';
 
@@ -22,10 +25,9 @@
 		} catch (error) {
 			/* Do you have a webcam? */
 			console.log(error);
-            alert("Please allow access to your webcam")
+			alert('Please allow access to your webcam');
 		}
 
-		
 		// Initialize Tesseract worker
 		worker = await createWorker({
 			logger: (m) => console.log(m)
@@ -33,19 +35,27 @@
 		await worker.load();
 		await worker.loadLanguage('eng');
 		await worker.initialize('eng');
-		
-		alert("Worker Loaded!")
-	};
 
-	const capture = async () => {
+		alert('Worker Loaded!');
+
 		ctx = canvas.getContext('2d')!;
-		ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-		const img = canvas.toDataURL('image/png');
-		
-		const {
-			data: { text }
-		} = await worker.recognize(img);
-		output = text ?? "No text found";	
+
+		async function recognize() {
+			ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+			const img = canvas.toDataURL('image/png');
+
+			const {
+				data: { text }
+			} = await worker.recognize(img);
+			output = text ?? 'No text found';
+		}
+
+		const interval = setInterval(recognize, 1000);
+		return ()=> {
+			clearInterval(interval);
+			worker.terminate();
+		}
+			
 	};
 
 	// Start the webcam
@@ -57,7 +67,6 @@
 	<video bind:this={video} />
 	<canvas bind:this={canvas} />
 	{#if running}
-		<button on:click={capture}>Capture</button>
 		<div><b>output:</b> {output}</div>
 	{:else}
 		<div>Loading...</div>
