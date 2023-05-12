@@ -17,14 +17,15 @@
 			video.onresize = () => {
 				canvas.width = video.videoWidth;
 				canvas.height = video.videoHeight;
-				running = true;
 			};
+			running = true;
 		} catch (error) {
 			/* Do you have a webcam? */
 			console.log(error);
             alert("Please allow access to your webcam")
 		}
 
+		/*
 		// Initialize Tesseract worker
 		worker = await createWorker({
 			logger: (m) => console.log(m)
@@ -32,16 +33,19 @@
 		await worker.load();
 		await worker.loadLanguage('eng');
 		await worker.initialize('eng');
+		*/
 	};
 
 	const capture = async () => {
 		ctx = canvas.getContext('2d')!;
 		ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 		const img = canvas.toDataURL('image/png');
+		/*
 		const {
 			data: { text }
 		} = await worker.recognize(img);
 		output = text;
+		*/
 	};
 
 	// Start the webcam
