@@ -51,7 +51,7 @@
 <main>
 	<h1>OCR with Tesseract.js!</h1>
 	<!-- svelte-ignore a11y-media-has-caption -->
-	<video bind:this={video} style="display: none" />
+	<video bind:this={video} />
 	<canvas bind:this={canvas} />
 	{#if running}
 		<button on:click={capture}>Capture</button>
